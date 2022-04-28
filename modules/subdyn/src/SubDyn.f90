@@ -2116,7 +2116,7 @@ SUBROUTINE CBMatrix( MRR, MLL, MRL, CRR, CLL, CRL, KRR, KLL, KRL, DOFM, Init, & 
    REAL(ReKi),             INTENT(INOUT) :: FMIMCP_V (   DOFM  )
    REAL(ReKi),             INTENT(INOUT) :: FMIMMP_V (   DOFM  ) 
    REAL(ReKi),             INTENT(INOUT) :: PhiR(p%DOFL, p%DOFR)   
-   REAL(ReKi),             INTENT(INOUT) :: PhiL(p%DOFL, p%DOFL)   !used to be PhiM(DOFL,DOFM), now it is more generic
+   REAL(ReKi),             INTENT(INOUT) :: PhiL(p%DOFL, p%DOFL)    !used to be PhiM(DOFL,DOFM), now it is more generic
    REAL(ReKi),             INTENT(INOUT) :: OmegaL(p%DOFL)   !used to be omegaM only   ! Eigenvalues
    INTEGER(IntKi),         INTENT(  OUT) :: ErrStat     ! Error status of the operation
    CHARACTER(*),           INTENT(  OUT) :: ErrMsg      ! Error message if ErrStat /= ErrID_None
@@ -2132,8 +2132,6 @@ SUBROUTINE CBMatrix( MRR, MLL, MRL, CRR, CLL, CRL, KRR, KLL, KRL, DOFM, Init, & 
    REAL(ReKi) , allocatable               :: RI(:)             ! RI(p%DOFR) , influece vector on I dofs
    REAL(ReKi) , allocatable               :: RL(:)             ! RR(p%DOFL) , influece vector on L dofs
    REAL(ReKi) , allocatable               :: RB(:)             ! RR(p%DOFL) , influece vector on b dofs   
-   REAL(ReKi) , allocatable               :: RM(:)             ! RR(p%DOFL) , influece vector on b dofs 
-   REAL(ReKi) , allocatable               :: PhiL_M(:)             ! RR(p%DOFL) , influece vector on b dofs
    REAL(ReKi) , allocatable               :: RR_PHI(:)             ! RR(p%DOFR) , influece vector on R dofs
    REAL(ReKi) , allocatable               :: RI_PHI(:)             ! RR(p%DOFR) , influece vector on I dofs
    REAL(ReKi) , allocatable               :: RL_PHI(:)             ! RR(p%DOFL) , influece vector on L dofs
@@ -2265,21 +2263,15 @@ SUBROUTINE CBMatrix( MRR, MLL, MRL, CRR, CLL, CRL, KRR, KLL, KRL, DOFM, Init, & 
    ! Set Influece vectors RR and RL
 
    CALL AllocAry( RL,  p%DOFL, 'Influence vector RL', ErrStat2, ErrMsg2); if(Failed()) return
-   CALL AllocAry( PhiL_M,  p%DOFL, 'Influence vector RL', ErrStat2, ErrMsg2); if(Failed()) return
    CALL AllocAry( RR,  p%DOFR, 'Influence vector RR', ErrStat2, ErrMsg2); if(Failed()) return 
-   CALL AllocAry( RI,  p%DOFI, 'Influence vector RI', ErrStat2, ErrMsg2); if(Failed()) return
-   CALL AllocAry( RM,  DOFM, 'Influence vector RM', ErrStat2, ErrMsg2); if(Failed()) return
+    CALL AllocAry( RI,  p%DOFI, 'Influence vector RI', ErrStat2, ErrMsg2); if(Failed()) return
    CALL AllocAry( RB,  p%DOFR - p%DOFI, 'Influence vector RB', ErrStat2, ErrMsg2); if(Failed()) return
    CALL AllocAry( p%RRbase,  p%DOFR - p%DOFI, 'Influence vector RRbase', ErrStat2, ErrMsg2); if(Failed()) return
-   
 
    RR = 0.0_ReKi
    RI = 0.0_ReKi
    RL = 0.0_ReKi
    RB = 0.0_ReKi
-   RM = 0.0_ReKi
-   PhiL_M = 0.0_ReKi
-   
    J = 0
 
    DO I = 1,p%DOFR
@@ -2439,19 +2431,13 @@ DO I = 1,p%DOFR
           ! -------------------          
           ! Cambio RL por RM
           
-      
-          
-      CALL AllocAry(InvPhiM, p%DOFL , p%DOFL , 'InvPhiM'      , ErrStat2, ErrMsg2); if(Failed()) return
+      CALL AllocAry(InvPhiM, DOFM , DOFM , 'InvPhiM'      , ErrStat2, ErrMsg2); if(Failed()) return
       InvPhiM = 0.0_ReKi 
       
       IF ( p%Nmodes > 0) THEN ! Tener en cuenta invphiM=0 cuando Nmodes=0
-      InvPhiM = Inv(PhiL(:,:),p%DOFL) 
-      PhiL_M = matmul(InvPhiM, RL - matmul(PhiR,RR) )
-      !matmul(PhiR,RR)+matmul(PhiL,RL)
-      RM = PhiL_M(1:DOFM)
+      InvPhiM = Inv(PhiL(:,1:DOFM),DOFM) 
        
-      FRIMCP = (MATMUL(CBB(p%DOFR-p%DOFI+1:p%DOFR, p%DOFR-p%DOFI+1:p%DOFR),RI) + MATMUL(CBM(p%DOFR-p%DOFI+1:p%DOFR, : ) , RM ))
-      !matmul(InvPhiM, RL - matmul(PhiR,RR) ) ))
+      FRIMCP = (MATMUL(CBB(p%DOFR-p%DOFI+1:p%DOFR, p%DOFR-p%DOFI+1:p%DOFR),RI) + MATMUL(CBM(p%DOFR-p%DOFI+1:p%DOFR, : ) ,matmul(InvPhiM, RL - matmul(PhiR,RR) ) ))
       
       Else 
       
@@ -2529,14 +2515,11 @@ DO I = 1,p%DOFR
 !      InvPhiM = Inv(PhiL(:,1:DOFM),DOFM)    !!NO SE PUEDE INVERTIR UNA MATRIZ NO CUADRADA!!
                                              !Falta ver como incluir amortiguamiento estructural   
 
-      FMIMKP = NOmegaM2(I-1) * RM
-      !matmul(InvPhiM, RL - matmul(PhiR,RR) ) !KMB ES 0, SOLO APARECE KLL=OMEGA2
-       
+      FMIMKP = NOmegaM2(I-1) * matmul(InvPhiM, RL - matmul(PhiR,RR) ) !KMB ES 0, SOLO APARECE KLL=OMEGA2 
       !MATMUL( TRANSPOSE( PhiL(:,1:DOFM) ) , MATMUL( TRANSPOSE(KRL) , RR ) )     &
        !         + MATMUL( TRANSPOSE( PhiL(:,1:DOFM) ) , MATMUL( KLLcopy , matmul(InvPhiM, RL - matmul(PhiR,RR) )) )
 
-      FMIMCP = MATMUL(TRANSPOSE(CBM(p%DOFR-p%DOFI+1:p%DOFR, : )),RI) + MATMUL(CMM(:, :)+ OmegaDamp2(I-1,I-1) , RM)
-      !MATMUL(InvPhiM, RL - MATMUL(PhiR,RR) )  )
+      FMIMCP = MATMUL(TRANSPOSE(CBM(p%DOFR-p%DOFI+1:p%DOFR, : )),RI) + MATMUL(CMM(:, :)+ OmegaDamp2(I-1,I-1) , MATMUL(InvPhiM, RL - MATMUL(PhiR,RR) )  )
       !MATMUL( TRANSPOSE( PhiL(:,1:DOFM) ), MATMUL( TRANSPOSE(CRL) , RR ) )      &
        !         + MATMUL( TRANSPOSE( PhiL(:,1:DOFM) ), MATMUL( CLL , matmul(InvPhiM, RL - matmul(PhiR,RR) ) ) )!+            &
        !         MATMUL( OmegaDamp2 , MATMUL( InvPhiM , RL ) )

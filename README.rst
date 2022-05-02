@@ -1,17 +1,6 @@
 OpenFAST
 ========
 
-|travisci| |nbsp| |rtfd|
-
-.. |travisci| image:: https://travis-ci.org/OpenFAST/openfast.svg?branch=dev
-   :target: https://travis-ci.org/OpenFAST/openfast
-   :alt: Build Status
-.. |rtfd| image:: https://readthedocs.org/projects/openfast/badge/?version=dev
-   :target: https://openfast.readthedocs.io/en/dev
-   :alt: Documentation Status
-.. |nbsp| unicode:: 0xA0
-   :trim:
-
 This repository contains a modified version of OpenFAST 2.2.0 in which the Subdyn module has been modified to include the two following features:
 
 * Seismic foundation input motions at the base of the support structure. 

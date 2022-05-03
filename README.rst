@@ -1,8 +1,6 @@
 OpenFAST
 ========
 
-|travisci| |nbsp| |rtfd|
-
 OpenFAST is a wind turbine simulation tool which builds on FAST v8. It was
 created with the goal of being a community model developed and used by research
 laboratories, academia, and industry. It is managed by a dedicated team at the
@@ -25,10 +23,10 @@ This repository contains a modified version of OpenFAST 2.2.0 in which the Subdy
 
 In order to be able to use these features, the following changes have been introduced into the OpenFAST input files:
 
-1. File con extensión tal incluye una nueva línea con la variable tal para indicar si hay sismo o no.
-2. Ese file incluye una nueva línea tal con la dirección del fichero donde lee el sismo
-3. Ese fichero tiene formato tal
-4. La definición de los SLPM se indica de tal manera ..
+1. File *SubDyn.dat*, new line with the variable *SeismicInp*, indicates if there is a seismic signal.
+2. File *SubDyn.dat* includes other new line **Seismic Input File**, read the seismic signal input here.
+3. **Seismic Input File**, in the examples *seismic_input.dat*.
+4. The *SLPM Coefficients* are indicated in File *SubDyn.dat*, in the line *Simplified LPM-Type members properties*. The SLPM member must have *Flag.1 = SLPM*.
 
 Uniform sismic input motions are assumed (i.e., if there exists more than una support, all of them experience the same foundation input motion). On the other hand, the parameters that define the SLPM must be obtained by fitting the target impedance functions. 
 

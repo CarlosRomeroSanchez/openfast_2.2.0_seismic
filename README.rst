@@ -1,18 +1,3 @@
-OpenFAST
-========
-
-OpenFAST is a wind turbine simulation tool which builds on FAST v8. It was
-created with the goal of being a community model developed and used by research
-laboratories, academia, and industry. It is managed by a dedicated team at the
-National Renewable Energy Lab. Our objective is to ensure that OpenFAST is
-sustainable software that is well tested and well documented. If you'd like
-to contribute, see the `Developer Documentation <https://openfast.readthedocs.io/en/dev/source/dev/index.html>`_
-and any open GitHub issues with the
-`Help Wanted <https://github.com/OpenFAST/openfast/issues?q=is%3Aopen+is%3Aissue+label%3A"Help+wanted">`_
-tag.
-
-**OpenFAST is under active development**.
-
  Modified version OpenFAST v2.2.0 
 ---------------------------------
 

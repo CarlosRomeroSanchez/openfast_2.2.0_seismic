@@ -1,5 +1,7 @@
- Modified version OpenFAST v2.2.0 
----------------------------------
+# OpenFAST
+
+Modified version OpenFAST v2.2.0 
+================================
 
 This repository contains a modified version of OpenFAST 2.2.0 in which the Subdyn module has been modified to include the two following features:
 
@@ -20,3 +22,8 @@ The original version of OpenFAST 2.2.0 can be found here `OpenFAST v2.2.0 <https
 [1] Carbonari S., Morici M., Dezi F., Leoni G., A lumped parameter model for timedomain inertial soil-structure interaction analysis of structures on pile foundations , Earthquake Engineering & Structural Dynamics, Vol. 47, 2147-2171.(2018)
 
 [2] Referenciar el paper del congreso como documentación adicional.
+
+Financing:
+========
+
+* ProID2020010025, funded by Consejerı́a de Economı́a, Conocimiento y Empleo (Agencia Canaria de la Investigación. Innovación y Sociedad de la Información) of the Gobierno de Canarias and FEDER;

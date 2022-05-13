@@ -1,5 +1,3 @@
-# OpenFAST
-
 Modified version OpenFAST v2.2.0 
 ================================
 

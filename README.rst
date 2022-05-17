@@ -25,3 +25,7 @@ Financing:
 ========
 
 * ProID2020010025, funded by Consejerı́a de Economı́a, Conocimiento y Empleo (Agencia Canaria de la Investigación. Innovación y Sociedad de la Información) of the Gobierno de Canarias and FEDER;
+
+  <p align="center">
+    <img src="docs/img/gobcan-fse.png">
+  </p>

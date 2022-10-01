@@ -19,7 +19,7 @@ The original version of OpenFAST 2.2.0 can be found here [OpenFAST v2.2.0](https
 
 \[1\] Carbonari S., Morici M., Dezi F., Leoni G., A lumped parameter model for timedomain inertial soil-structure interaction analysis of structures on pile foundations , Earthquake Engineering & Structural Dynamics, Vol. 47, 2147-2171.(2018)
 
-\[2\] Referenciar el paper del congreso como documentación adicional.
+\[2\] Romero-Sánchez C. and Padrón L.A., Implementation of Ground Input Motion and Dynamic Soil-Structure Interaction into Openfast for the Seismic Analysis of Offshore Wind Turbines. Congress on Numerical Methods in Engineering, CMN 2022.
 
 Financing: 
 ========
